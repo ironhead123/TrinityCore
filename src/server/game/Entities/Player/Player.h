@@ -33,6 +33,7 @@
 #include "QuestDef.h"
 #include "SceneMgr.h"
 #include <queue>
+#include "PlayerStorage.h"
 
 struct AccessRequirement;
 struct AchievementEntry;
@@ -1926,6 +1927,8 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
 
         int32 CalculateReputationGain(ReputationSource source, uint32 creatureOrQuestLevel, int32 rep, int32 faction, bool noQuestBonus = false);
 
+        PlayerStorage* GetStorage() const { return m_playerStorage; }
+
         void UpdateSkillsForLevel();
         void UpdateSkillsToMaxSkillsForLevel();             // for .levelup
         void ModifySkillBonus(uint32 skillid, int32 val, bool talent);
@@ -2752,6 +2755,8 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
         PlayerAchievementMgr* m_achievementMgr;
         ReputationMgr*  m_reputationMgr;
         std::unique_ptr<QuestObjectiveCriteriaMgr> m_questObjectiveCriteriaMgr;
+
+       	PlayerStorage* m_playerStorage;
 
         uint32 m_ChampioningFaction;
 
