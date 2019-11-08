@@ -364,6 +364,7 @@ void WorldSession::HandleCharEnum(PreparedQueryResult result)
         WorldPackets::Character::EnumCharactersResult::RaceUnlock raceUnlock;
         raceUnlock.RaceID = requirement.first;
         raceUnlock.HasExpansion = GetAccountExpansion() >= requirement.second.Expansion;
+        raceUnlock.HasAchievement = requirement.second.AchievementId == 0; //Hack fixed need implement bnet_achievement
         charEnum.RaceUnlockData.push_back(raceUnlock);
     }
 

@@ -860,6 +860,14 @@ MinDualSpecLevel = 30
 StartPlayerLevel = 1
 
 #
+#    StartAlliedRacesPlayerLevel
+#        Description: Staring level for allied races after creation.
+#        Range:       1-MaxPlayerLevel
+#        Default:     20
+
+ StartAlliedRacesPlayerLevel = 20
+
+#
 #    StartDeathKnightPlayerLevel
 #        Description: Staring level for death knights after creation.
 #        Range:       1-MaxPlayerLevel
@@ -1299,7 +1307,7 @@ FeatureSystem.CharacterUndelete.Cooldown = 2592000
 #                     4  - (Enable world only)
 #                     0  - (All Disabled)
 
-Updates.EnableDatabases = 15
+Updates.EnableDatabases = 0
 
 #
 #    Updates.AutoSetup
