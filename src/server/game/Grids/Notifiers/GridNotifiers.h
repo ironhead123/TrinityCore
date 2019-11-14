@@ -691,16 +691,16 @@ namespace Trinity
 
             bool operator()(GameObject* go) const
             {
-                if (go->GetGOInfo()->type != GAMEOBJECT_TYPE_SPELL_FOCUS)
+                if (go->GetGOInfo()->type != GAMEOBJECT_TYPE_SPELL_FOCUS && go->GetGOInfo()->type != GAMEOBJECT_TYPE_UI_LINK)
                     return false;
 
-                if (go->GetGOInfo()->spellFocus.spellFocusType != i_focusId)
+                if (go->GetGOInfo()->spellFocus.spellFocusType != i_focusId && go->GetGOInfo()->UILink.spellFocusType != i_focusId)
                     return false;
 
                 if (!go->isSpawned())
                     return false;
 
-                float dist = go->GetGOInfo()->spellFocus.radius / 2.f;
+                float dist = go->GetGOInfo()->type == GAMEOBJECT_TYPE_SPELL_FOCUS ? static_cast<float>(go->GetGOInfo()->spellFocus.radius) : static_cast<float>(go->GetGOInfo()->UILink.radius);
 
                 return go->IsWithinDistInMap(i_unit, dist);
             }

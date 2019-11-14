@@ -39,6 +39,12 @@ enum MonkSpells
     SPELL_MONK_SOOTHING_MIST                            = 115175,
     SPELL_MONK_STANCE_OF_THE_SPIRITED_CRANE             = 154436,
     SPELL_MONK_SURGING_MIST_HEAL                        = 116995,
+    SPELL_MONK_ROLL                                     = 109132,
+    SPELL_MONK_ROLL_ANIMATION                           = 111396,
+    SPELL_MONK_ROLL_BACKWARD                            = 109131,
+    SPELL_MONK_ROLL_TRIGGER                             = 107427,
+    SPELL_MONK_RESTLESS_PURSUIT                         = 124489,
+    SPELL_MONK_ROLL_SPEED_CONTROLS                      = 157361
 };
 
 // 117952 - Crackling Jade Lightning
@@ -159,9 +165,109 @@ class spell_monk_provoke : public SpellScript
     }
 };
 
+// 109132 - Roll
+class spell_monk_roll : public SpellScript
+{
+    PrepareSpellScript(spell_monk_roll);
+
+    bool Validate(SpellInfo const* /*spellInfo*/) override
+    {
+        return ValidateSpellInfo(
+        {
+            SPELL_MONK_ROLL,
+            SPELL_MONK_ROLL_TRIGGER,
+            SPELL_MONK_ROLL_BACKWARD
+        });  
+    }
+
+    void HandleAfterCast()
+    {
+        Unit* caster = GetCaster();
+        if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
+            return;
+
+        if (caster->HasAura(SPELL_MONK_RESTLESS_PURSUIT))
+            caster->RemoveAurasByType(SPELL_AURA_MOD_DECREASE_SPEED);
+    }
+
+    void HandleDummy()
+    {
+        if (Unit* caster = GetCaster())
+        {
+            if (caster->HasUnitMovementFlag(MOVEMENTFLAG_BACKWARD))
+                caster->CastSpell(caster, SPELL_MONK_ROLL_BACKWARD, true);
+            else
+                caster->CastSpell(caster, SPELL_MONK_ROLL_TRIGGER, true);
+        }
+    }
+
+    void Register() override
+    {
+        AfterCast += SpellCastFn(spell_monk_roll::HandleAfterCast);
+        AfterHit += SpellHitFn(spell_monk_roll::HandleDummy);
+    }
+};
+
+// Roll trigger - 107427
+class spell_monk_roll_trigger : public AuraScript
+{
+    PrepareAuraScript(spell_monk_roll_trigger);
+
+    void CalcSpeed(AuraEffect const* /*aurEff*/, int32& amount, bool& /*canBeRecalculated*/)
+    {
+        Unit* caster = GetCaster();
+        if (!caster)
+            return;
+
+        if (caster->HasAura(SPELL_MONK_ROLL_SPEED_CONTROLS))
+            amount = 277;
+    }
+
+    void CalcSpeed2(AuraEffect const* /*aurEff*/, int32& amount, bool& /*canBeRecalculated*/)
+    {
+        Unit* caster = GetCaster();
+        if (!caster)
+            return;
+
+        if (!caster->HasAura(SPELL_MONK_ROLL_SPEED_CONTROLS))
+            return;
+
+        amount = 377;
+    }
+
+    void SendAmount(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
+    {
+        Unit* caster = GetCaster();
+        if (!caster)
+            return;
+
+        if (!caster->HasAura(SPELL_MONK_ROLL_SPEED_CONTROLS))
+            return;
+
+        Aura* aur = GetAura();
+        if (!aur)
+            return;
+
+        aur->SetMaxDuration(600);
+        aur->SetDuration(600);
+
+        if (AuraApplication* aurApp = GetAura()->GetApplicationOfTarget(caster->GetGUID()))
+            aurApp->ClientUpdate();
+    }
+
+    void Register() override
+    {
+        DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_monk_roll_trigger::CalcSpeed, EFFECT_0, SPELL_AURA_MOD_SPEED_NO_CONTROL);
+        DoEffectCalcAmount += AuraEffectCalcAmountFn(spell_monk_roll_trigger::CalcSpeed2, EFFECT_2, SPELL_AURA_MOD_MINIMUM_SPEED);
+        AfterEffectApply += AuraEffectApplyFn(spell_monk_roll_trigger::SendAmount, EFFECT_4, SPELL_AURA_USE_NORMAL_MOVEMENT_SPEED, AURA_EFFECT_HANDLE_REAL);
+    }
+};
+
 void AddSC_monk_spell_scripts()
 {
     RegisterAuraScript(spell_monk_crackling_jade_lightning);
     RegisterAuraScript(spell_monk_crackling_jade_lightning_knockback_proc_aura);
     RegisterSpellScript(spell_monk_provoke);
+    RegisterSpellScript(spell_monk_roll);
+    RegisterAuraScript(spell_monk_roll_trigger);
 }

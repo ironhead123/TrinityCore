@@ -143,18 +143,18 @@ enum Races
     RACE_GOBLIN                 = 9,
     RACE_BLOODELF               = 10,
     RACE_DRAENEI                = 11,
-    //RACE_FEL_ORC            = 12,
-    //RACE_NAGA               = 13,
-    //RACE_BROKEN             = 14,
-    //RACE_SKELETON           = 15,
-    //RACE_VRYKUL             = 16,
-    //RACE_TUSKARR            = 17,
-    //RACE_FOREST_TROLL       = 18,
-    //RACE_TAUNKA             = 19,
-    //RACE_NORTHREND_SKELETON = 20,
-    //RACE_ICE_TROLL          = 21,
+    //RACE_FEL_ORC              = 12,
+    //RACE_NAGA                 = 13,
+    //RACE_BROKEN               = 14,
+    //RACE_SKELETON             = 15,
+    //RACE_VRYKUL               = 16,
+    //RACE_TUSKARR              = 17,
+    //RACE_FOREST_TROLL         = 18,
+    //RACE_TAUNKA               = 19,
+    //RACE_NORTHREND_SKELETON   = 20,
+    //RACE_ICE_TROLL            = 21,
     RACE_WORGEN                 = 22,
-    //RACE_GILNEAN            = 23,
+    //RACE_GILNEAN              = 23,
     RACE_PANDAREN_NEUTRAL       = 24,
     RACE_PANDAREN_ALLIANCE      = 25,
     RACE_PANDAREN_HORDE         = 26,
@@ -162,11 +162,11 @@ enum Races
     RACE_HIGHMOUNTAIN_TAUREN    = 28,
     RACE_VOID_ELF               = 29,
     RACE_LIGHTFORGED_DRAENEI    = 30,
-    //RACE_ZANDALARI_TROLL    = 31,
-    //RACE_KUL_TIRAN          = 32,
-    //RACE_THIN_HUMAN         = 33,
+    RACE_ZANDALARI_TROLL        = 31,
+    RACE_KUL_TIRAN              = 32,
+    //RACE_THIN_HUMAN           = 33,
     RACE_DARK_IRON_DWARF        = 34,
-    //RACE_VULPERA            = 35,
+    //RACE_VULPERA              = 35,
     RACE_MAGHAR_ORC             = 36
 };
 
@@ -192,6 +192,8 @@ enum Races
      (UI64LIT(1)<<(RACE_NIGHTBORNE-1))          | \
      (UI64LIT(1)<<(RACE_HIGHMOUNTAIN_TAUREN-1)) | \
      (UI64LIT(1)<<(RACE_VOID_ELF-1))            | \
+     (UI64LIT(1)<<(RACE_ZANDALARI_TROLL-1))     | \
+     (UI64LIT(1)<<(RACE_KUL_TIRAN-1))           | \
      (UI64LIT(1)<<(RACE_LIGHTFORGED_DRAENEI-1)) | \
      (UI64LIT(1)<<(RACE_DARK_IRON_DWARF-1))     | \
      (UI64LIT(1)<<(RACE_MAGHAR_ORC-1)))
@@ -207,6 +209,7 @@ enum Races
      (UI64LIT(1)<<(RACE_WORGEN-1))              | \
      (UI64LIT(1)<<(RACE_PANDAREN_ALLIANCE-1))   | \
      (UI64LIT(1)<<(RACE_VOID_ELF-1))            | \
+     (UI64LIT(1)<<(RACE_KUL_TIRAN-1))           | \
      (UI64LIT(1)<<(RACE_LIGHTFORGED_DRAENEI-1)) | \
      (UI64LIT(1)<<(RACE_DARK_IRON_DWARF-1)))
 
